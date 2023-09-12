@@ -14,11 +14,17 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse>
             <Nav className="ms-auto">
-              <Nav.Link href="/cart">
-                <FaShoppingCart /> Cart
+              <Nav.Link
+                className="d-flex flex-row justify-content-center align-items-center"
+                href="/cart"
+              >
+                <FaShoppingCart className="me-1" /> Cart
               </Nav.Link>
-              <Nav.Link href="/login">
-                <FaUser /> Sign In
+              <Nav.Link
+                className="d-flex flex-row justify-content-center align-items-center"
+                href="/login"
+              >
+                <FaUser className="me-1" /> Sign In
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
