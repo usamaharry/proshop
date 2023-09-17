@@ -19,4 +19,10 @@ app.use("/api/products", productRoutes);
 
 app.use(errorHandler);
 
+app.use("*", (req, res, next) => {
+  res.json({
+    message: "Invalid api",
+  });
+});
+
 app.listen(port, () => console.log(`Server is running at ${port}`));
