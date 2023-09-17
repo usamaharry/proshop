@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 import { Rating } from "../components/Rating";
 import { useGetProdcutDetailQuery } from "../slices/productsApiSlice";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 const ProductDetailScreen = () => {
   const { id: productId } = useParams();
@@ -20,9 +22,11 @@ const ProductDetailScreen = () => {
         Go Back
       </Link>
       {isLoading ? (
-        <h2>Loading...</h2>
+        <Loader />
       ) : error ? (
-        <h5>{error?.data.message || error?.error}</h5>
+        <Message varient="danger">
+          {error?.data.message || error?.error}
+        </Message>
       ) : (
         <>
           <Row>
