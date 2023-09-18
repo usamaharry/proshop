@@ -22,23 +22,24 @@ const cartSlice = createSlice({
       const existingItem = state.cartItems.find((i) => i._id === item._id);
 
       if (existingItem) {
-        const existingQty = existingItem.qty;
-        const newQty = item.qty;
-
-        state.cartItems = state.cartItems.map((item) =>
-          item._id === existingItem._id
-            ? { ...existingItem, qty: existingQty + newQty }
-            : item
+        state.cartItems = state.cartItems.map((i) =>
+          i._id === existingItem._id ? item : i
         );
       } else {
         state.cartItems = [...state.cartItems, item];
       }
+      return updateCart(state);
+    },
+    removeFromCart: (state, action) => {
+      const itemId = action.payload;
+
+      state.cartItems = state.cartItems.filter((item) => item._id !== itemId);
 
       return updateCart(state);
     },
   },
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, removeFromCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
