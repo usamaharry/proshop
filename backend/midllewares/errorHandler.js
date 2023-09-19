@@ -3,7 +3,7 @@ import errorCodes from "../utils/errorCodes.js";
 
 const errorHandler = (error, req, res, next) => {
   if (error instanceof AppError) {
-    return res.status(error.statusCode).json({
+    return res.status(error.statusCode && error.statusCode).json({
       message: error.message,
       errorCode: error.errorCode,
     });

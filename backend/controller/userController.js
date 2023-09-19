@@ -1,10 +1,46 @@
+import jwt from "jsonwebtoken";
+
 import tryCatch from "../utils/tryCatch.js";
+import User from "../models/user.js";
+import AppError from "../models/AppError.js";
+import errorCodes from "../utils/errorCodes.js";
 
 // @desc   User login
 // @route POST /api/users/login
 // @access public
 export const loginUser = tryCatch(async (req, res, next) => {
-  res.send("Login user");
+  const { email, password } = req.body;
+
+  console.log(email);
+
+  const user = await User.findOne({ email });
+
+  if (user && (await user.matchPassword(password))) {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in ms
+    });
+
+    return res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  }
+
+  res.status(401);
+  throw new AppError(
+    "Invalid Credentials",
+    errorCodes.INVALID_LOGIN_CREDENTIALS,
+    401
+  );
 });
 
 // @desc   User Register
